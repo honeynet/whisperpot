@@ -39,6 +39,7 @@ while true; do
              echo "Installing Asterisk..."
              cd docker-asterisk
              sudo docker compose up -d --build
+             sudo docker exec docker-asterisk-asterisk-1 /usr/sbin/asterisk
              ;;
         2)
              echo "Installing Kamailio..."
@@ -52,7 +53,17 @@ while true; do
 
         esac
         ;;
-
+    4)
+        cd docker-jupyter
+        sudo docker-compose up -d --build
+        echo "Installation done"
+    5)
+        NEW_HOST=$(whiptail --inputbox "Enter the new Elasticsearch host IP:" 10 60 3>&1 1>&2 2>&3)
+        sed -i "s/'host': 'localhost'/'host': '$NEW_HOST'/g" ./docker-jupyter/app/sip_capture.py
+        ;;
+    6)
+        sudo docker exec docker-jupyter-jupyter-1 nohup python ./work/sip_capture.py > /dev/null 2>&1 &
+        ;;
     10)
         sudo docker ps;
         ;;
