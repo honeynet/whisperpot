@@ -55,8 +55,9 @@ while true; do
         ;;
     4)
         cd docker-jupyter
-        sudo docker-compose up -d --build
+        sudo docker compose up -d --build
         echo "Installation done"
+        ;;
     5)
         NEW_HOST=$(whiptail --inputbox "Enter the new Elasticsearch host IP:" 10 60 3>&1 1>&2 2>&3)
         sed -i "s/'host': 'localhost'/'host': '$NEW_HOST'/g" ./docker-jupyter/app/sip_capture.py

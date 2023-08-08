@@ -39,7 +39,7 @@ def get_ip_details(ip_address):
 
 
 # Connect to the local Elasticsearch instance
-es = Elasticsearch([{'host': 'localhost', 'port': 9200, 'scheme': 'http'}], http_auth=('elastic', 'changeme'))
+es = Elasticsearch([{'host': '20.212.114.125', 'port': 9200, 'scheme': 'http'}], http_auth=('elastic', 'changeme'))
 
 def send_to_elasticsearch(sip_data_dict):
     index_name = "sip_data"  # Name of the index
@@ -130,6 +130,9 @@ def process_packet(packet):
             print("=" * 60)
         # Query IP details and add to sip_data_dict
         source_ip_details = get_ip_details(packet[IP].src)
+        sip_data_dict["src_ip"] = packet[IP].src
+        sip_data_dict["dst_ip"] = packet[IP].dst
+        sip_data_dict["summary"] = packet.summary()
         sip_data_dict["Source_IP_Details"] = source_ip_details
         # Send the data to Elasticsearch
         response = send_to_elasticsearch(sip_data_dict)
