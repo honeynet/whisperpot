@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  jupyter:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./app:/home/jovyan/work
+    user: root
+    environment:
+      - JUPYTER_ENABLE_LAB=no
+      - GEN_CERT=yes
+      - GRANT_SUDO=yes
+    command: "start-notebook.sh --NotebookApp.token='whisperpot'"
+    network_mode: host
+
+volumes:
+  jupyter-data:
