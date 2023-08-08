@@ -1,0 +1,6 @@
+.env
+__pycache__/
+.scrapy
+.ipynb_checkpoints
+profile_default/
+ipython_config.py
