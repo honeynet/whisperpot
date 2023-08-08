@@ -1,3 +1,6 @@
 [submodule "docker-asterisk"]
 	path = docker-asterisk
 	url = https://github.com/yevonnaelandrew/docker-asterisk
+[submodule "docker-elk"]
+	path = docker-elk
+	url = https://github.com/deviantony/docker-elk/
