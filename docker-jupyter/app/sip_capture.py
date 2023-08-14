@@ -4,6 +4,7 @@ import sys
 import time
 import json
 import requests
+import logging
 from datetime import datetime
 from scapy.all import sniff, IP, TCP, UDP
 from ipaddress import ip_address, ip_network
@@ -16,6 +17,10 @@ try:
         ip_cache = json.load(f)
 except (FileNotFoundError, json.JSONDecodeError):
     ip_cache = {}
+
+# Set up logging
+logging.basicConfig(filename='sip_capture_errors.log', level=logging.ERROR, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
 def get_ip_details(ip_address):
     # Check cache first
@@ -135,7 +140,11 @@ def process_packet(packet):
         sip_data_dict["summary"] = packet.summary()
         sip_data_dict["Source_IP_Details"] = source_ip_details
         # Send the data to Elasticsearch
-        response = send_to_elasticsearch(sip_data_dict)
+        try:
+            response = send_to_elasticsearch(sip_data_dict)
+        except Exception as e:
+            # Log the error and the raw data
+            logger.error(f"Failed to index document due to error: {str(e)}. Raw data: {sip_data_dict}")
 
 def main():
     try:
