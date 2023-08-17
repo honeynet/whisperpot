@@ -4,3 +4,6 @@
 [submodule "docker-elk"]
 	path = docker-elk
 	url = https://github.com/deviantony/docker-elk/
+[submodule "docker-kamailio"]
+	path = docker-kamailio
+	url = https://github.com/yevonnaelandrew/docker-kamailio
