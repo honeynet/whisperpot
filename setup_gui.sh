@@ -36,13 +36,31 @@ while true; do
 
         case $HONEYPOT_OPTION in
         1)
-             echo "Installing Asterisk..."
-             cd docker-asterisk
-             sudo docker compose up -d --build
-             sudo docker exec docker-asterisk-asterisk-1 /usr/sbin/asterisk
-             ;;
+         ASTERISK_OPTION=$(whiptail --title "Asterisk Setup" --menu "Choose an Asterisk option:" 20 70 10 \
+                                 "1" "Asterisk Standalone (Capture SIP only)" \
+                                 "2" "Asterisk with Web-based GUI (Capture SIP and HTTP)" 3>&1 1>&2 2>&3)
+         case $ASTERISK_OPTION in
+          1)
+            echo "Installing Asterisk Standalone..."
+            cd docker-asterisk/asterisk-standalone
+            sudo docker compose up -d --build
+            sudo docker exec asterisk-standalone-asterisk-1 /usr/sbin/asterisk
+            ;;
+          2)
+            echo "Installing Asterisk with Web-based GUI..."
+            cd docker-asterisk/asterisk-gui
+            sudo docker compose up -d --build
+            sudo docker exec asterisk-gui-asterisk-1 /usr/sbin/asterisk
+            ;;
+          *)
+            echo "Invalid Option. Returning to Asterisk Menu..."
+            ;;
+    esac
+    ;;
         2)
              echo "Installing Kamailio..."
+             cd docker-kamailio/kamailio-standalone
+             sudo docker compose up -d --build
              ;;
         3)
              continue

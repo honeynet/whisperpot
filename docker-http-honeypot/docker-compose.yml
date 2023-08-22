@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  http-honeypot:
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - http-honeypot:/app
+
+volumes:
+  http-honeypot
