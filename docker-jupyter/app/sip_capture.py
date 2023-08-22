@@ -9,6 +9,11 @@ from datetime import datetime
 from scapy.all import sniff, IP, TCP, UDP
 from ipaddress import ip_address, ip_network
 from elasticsearch import Elasticsearch
+import os
+from dotenv import load_dotenv
+
+# Load the .env file
+load_dotenv()
 
 CACHE_FILE = "ip_cache.json"
 
@@ -42,9 +47,15 @@ def get_ip_details(ip_address):
     else:
         return {}
 
+# Read the credentials from the environment variables
+es_host = os.getenv('ES_HOST')
+es_port = os.getenv('ES_PORT')
+es_scheme = os.getenv('ES_SCHEME')
+es_user = os.getenv('ES_USER')
+es_password = os.getenv('ES_PASSWORD')
 
-# Connect to the local Elasticsearch instance
-es = Elasticsearch([{'host': '20.212.114.125', 'port': 9200, 'scheme': 'http'}], http_auth=('elastic', 'changeme'))
+# Connect to the Elasticsearch instance using the credentials from the .env file
+es = Elasticsearch([{'host': es_host, 'port': es_port, 'scheme': es_scheme}], http_auth=(es_user, es_password))
 
 def send_to_elasticsearch(sip_data_dict):
     index_name = "sip_data"  # Name of the index

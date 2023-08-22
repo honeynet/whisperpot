@@ -7,7 +7,7 @@ while true; do
                     "3" "Install and Setup Honeypot" \
                     "4" "Install Python to Capture Traffic" \
                     "5" "Configure Database Connection" \
-                    "6" "Run the Capture" \
+                    "6" "Run the SIP Capture" \
                     "10" "Show Status" 3>&1 1>&2 2>&3)
     # Script version 1.0 updated 24 May 2023
     # Depending on the chosen option, execute the corresponding command
@@ -48,9 +48,11 @@ while true; do
             ;;
           2)
             echo "Installing Asterisk with Web-based GUI..."
-            cd docker-asterisk/asterisk-gui
+            cd docker-asterisk/asterisk-standalone
             sudo docker compose up -d --build
             sudo docker exec asterisk-gui-asterisk-1 /usr/sbin/asterisk
+            cd ../docker-http-honeypot
+            sudo docker compose up -d --build
             ;;
           *)
             echo "Invalid Option. Returning to Asterisk Menu..."
@@ -58,10 +60,27 @@ while true; do
     esac
     ;;
         2)
-             echo "Installing Kamailio..."
-             cd docker-kamailio/kamailio-standalone
-             sudo docker compose up -d --build
-             ;;
+         KAMAILIO_OPTION=$(whiptail --title "Kamailio Setup" --menu "Choose a Kamailio option:" 20 70 10 \
+                                 "1" "Kamailio Standalone (Capture SIP only)" \
+                                 "2" "Kamailio with Web-based GUI (Capture SIP and HTTP)" 3>&1 1>&2 2>&3)
+         case $KAMAILIO_OPTION in
+          1)
+            echo "Installing Kamailio Standalone..."
+            cd docker-kamailio/kamailio-standalone
+            sudo docker compose up -d --build
+            ;;
+          2)
+            echo "Installing Kamailio with Web-based GUI..."
+            cd docker-kamailio/kamailio-standalone
+            sudo docker compose up -d --build
+            cd ../docker-http-honeypot
+            sudo docker compose up -d --build
+            ;;
+          *)
+            echo "Invalid Option. Returning to Kamailio Menu..."
+            ;;
+    esac
+    ;;
         3)
              continue
              ;;
@@ -77,8 +96,21 @@ while true; do
         echo "Installation done"
         ;;
     5)
-        NEW_HOST=$(whiptail --inputbox "Enter the new Elasticsearch host IP:" 10 60 3>&1 1>&2 2>&3)
-        sed -i "s/'host': 'localhost'/'host': '$NEW_HOST'/g" ./docker-jupyter/app/sip_capture.py
+        # Prompt the user for the DB_HOST
+        DB_HOST=$(whiptail --inputbox "Enter the database host:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the DB_USER
+        DB_USER=$(whiptail --inputbox "Enter the database user:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the DB_PASSWORD
+        DB_PASSWORD=$(whiptail --passwordbox "Enter the database password:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the DB_NAME
+        DB_NAME=$(whiptail --inputbox "Enter the database name:" 8 40 3>&1 1>&2 2>&3)
+        # Create the .env file
+        echo "DB_HOST=$DB_HOST" > ./docker-jupyter/app/.env
+        echo "DB_USER=$DB_USER" >> ./docker-jupyter/app/.env
+        echo "DB_PASSWORD=$DB_PASSWORD" >> ./docker-jupyter/app/.env
+        echo "DB_NAME=$DB_NAME" >> ./docker-jupyter/app/.env
+        # Print a message to indicate that the .env file has been created
+        whiptail --msgbox ".env file has been created" 8 40
         ;;
     6)
         sudo docker exec docker-jupyter-jupyter-1 nohup python ./work/sip_capture.py > /dev/null 2>&1 &
