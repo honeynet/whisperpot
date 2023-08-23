@@ -109,6 +109,11 @@ while true; do
         echo "DB_USER=$DB_USER" >> ./docker-jupyter/app/.env
         echo "DB_PASSWORD=$DB_PASSWORD" >> ./docker-jupyter/app/.env
         echo "DB_NAME=$DB_NAME" >> ./docker-jupyter/app/.env
+
+        echo "DB_HOST=$DB_HOST" > ./docker-http-honeypot/.env
+        echo "DB_USER=$DB_USER" >> ./docker-http-honeypot/.env
+        echo "DB_PASSWORD=$DB_PASSWORD" >> ./docker-http-honeypot/.env
+        echo "DB_NAME=$DB_NAME" >> ./docker-http-honeypot/.env
         # Print a message to indicate that the .env file has been created
         whiptail --msgbox ".env file has been created" 8 40
         ;;

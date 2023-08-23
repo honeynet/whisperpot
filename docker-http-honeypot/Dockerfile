@@ -11,7 +11,7 @@ COPY . /app
 RUN pip install --no-cache-dir Flask
 
 # Install dependencies
-RUN pip install elasticsearch requests
+RUN pip install elasticsearch requests python-dotenv
 
 # Make port 80 available to the world outside this container
 EXPOSE 80
@@ -20,4 +20,6 @@ EXPOSE 80
 ENV FLASK_APP=app.py
 
 # Run app.py when the container launches
-CMD ["flask", "run", "--host=0.0.0.0"]
+CMD ["flask", "run", "--host=0.0.0.0", "--port=80"]
+#CMD ["ls", "-la"]
+#CMD ["tail", "-f", "/dev/null"]

@@ -14,9 +14,12 @@ logging.basicConfig(filename='honeypot.log', level=logging.WARNING)
 
 CACHE_FILE = "ip_cache.json"
 
+load_dotenv()  # take environment variables from .env.
+
 # Read the credentials from the environment variables
 es_host = os.getenv('ES_HOST')
-es_port = os.getenv('ES_PORT')
+es_port = int(os.getenv('ES_PORT'))
+print(es_port)
 es_scheme = os.getenv('ES_SCHEME')
 es_user = os.getenv('ES_USER')
 es_password = os.getenv('ES_PASSWORD')

@@ -9,4 +9,4 @@ services:
       - http-honeypot:/app
 
 volumes:
-  http-honeypot
+  http-honeypot:
