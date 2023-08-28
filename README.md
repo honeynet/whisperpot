@@ -4,6 +4,14 @@ WhisperPot is an ongoing project aimed at creating a comprehensive VoIP honeypot
 potential threats and vulnerabilities in VoIP systems. WhisperPot simulates a realistic VoIP environment and is targeted at security 
 researchers, VoIP service providers, and network administrators.
 
+## Public Dashboard
+
+Please check our [public dashboard here](https://whisperpot.xyz/).
+
+<div align="center">
+    <img src="./images/dashboard.png" alt="Public Dashboard">
+</div>
+
 ## Features
 
 - SIP protocol support
@@ -11,8 +19,8 @@ researchers, VoIP service providers, and network administrators.
 - Customizable profiles for different VoIP systems, devices, usernames, and passwords
 - Monitoring and logging capabilities for SIP messages, RTP traffic, and other relevant activities
 - Ability to enrich with external data sources
-- Integration with MongoDB and Elasticsearch for data storage and search
-- Visualization using Kibana
+- Integration with Elasticsearch for data storage and search
+- Visualization using Kibana and Grafana
 
 ## Technical Implementation
 
@@ -22,8 +30,36 @@ primarily built using Python and deployed on Linux-based operating systems.
 ## Architecture
 
 <div align="center">
-    <img src="./images/architecture.png" alt="WhisperPot Architecture" height="800">
+    <img src="./images/arch.png" alt="WhisperPot Architecture" height="800">
 </div>
+
+## Installation
+
+1. **Clone the Repository**
+
+```
+git clone https://github.com/honeynet/whisperpot
+```
+
+Navigate to the cloned directory:
+
+```
+cd whisperpot
+```
+
+2. **Make Script as Executable**
+
+```
+sudo chmod +x setup_gui.sh
+```
+
+3. **Run the Executable Script**
+
+You need to run it as sudo:
+
+```
+sudo ./ setup_gui.sh
+```
 
 
 ## GSoC 2023
