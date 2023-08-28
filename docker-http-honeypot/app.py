@@ -2,6 +2,7 @@ from flask import Flask, render_template_string, request, redirect, url_for
 import logging
 import json
 import time
+import datetime
 import requests
 from elasticsearch import Elasticsearch
 import os
@@ -71,6 +72,7 @@ def log_request(req, route_name):
         "args": req.args.to_dict(),
         "data": req.data.decode('utf-8'),
         "eventtime": int(time.time()),
+        "time": datetime.datetime.now().isoformat(),
         "honeypotname": route_name
     }
     logging.warning(req)
@@ -78,7 +80,7 @@ def log_request(req, route_name):
     log_data["Source_IP_Details"] = source_ip_details
     # Send the data to Elasticsearch
     try:
-        pass # response = send_to_elasticsearch(log_data)
+        response = send_to_elasticsearch(log_data)
     except Exception as e:
         # Log the error and the raw data
         logging.error(f"Failed to index document due to error: {str(e)}. Raw data: {log_data}")
