@@ -98,24 +98,26 @@ while true; do
         echo "Installation done"
         ;;
     5)
-        # Prompt the user for the DB_HOST
-        DB_HOST=$(whiptail --inputbox "Enter the database host:" 8 40 3>&1 1>&2 2>&3)
-        # Prompt the user for the DB_USER
-        DB_USER=$(whiptail --inputbox "Enter the database user:" 8 40 3>&1 1>&2 2>&3)
-        # Prompt the user for the DB_PASSWORD
-        DB_PASSWORD=$(whiptail --passwordbox "Enter the database password:" 8 40 3>&1 1>&2 2>&3)
-        # Prompt the user for the DB_NAME
-        DB_NAME=$(whiptail --inputbox "Enter the database name:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the ES_HOST
+        ES_HOST=$(whiptail --inputbox "Enter the database host:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the ES_USER
+        ES_USER=$(whiptail --inputbox "Enter the database user:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the ES_PASSWORD
+        ES_PASSWORD=$(whiptail --passwordbox "Enter the database password:" 8 40 3>&1 1>&2 2>&3)
+        # Prompt the user for the port
+        ES_PORT=$(whiptail --inputbox "Enter the database name:" 8 40 3>&1 1>&2 2>&3)
         # Create the .env file
-        echo "DB_HOST=$DB_HOST" > ./docker-jupyter/app/.env
-        echo "DB_USER=$DB_USER" >> ./docker-jupyter/app/.env
-        echo "DB_PASSWORD=$DB_PASSWORD" >> ./docker-jupyter/app/.env
-        echo "DB_NAME=$DB_NAME" >> ./docker-jupyter/app/.env
+        echo "ES_HOST=$ES_HOST" > ./docker-jupyter/app/.env
+        echo "ES_USER=$ES_USER" >> ./docker-jupyter/app/.env
+        echo "ES_PASSWORD=$ES_PASSWORD" >> ./docker-jupyter/app/.env
+        echo "ES_PORT=$ES_PORT" >> ./docker-jupyter/app/.env
+        echo "ES_SCHEME='http'" >> ./docker-jupyter/app/.env
 
-        echo "DB_HOST=$DB_HOST" > ./docker-http-honeypot/.env
-        echo "DB_USER=$DB_USER" >> ./docker-http-honeypot/.env
-        echo "DB_PASSWORD=$DB_PASSWORD" >> ./docker-http-honeypot/.env
-        echo "DB_NAME=$DB_NAME" >> ./docker-http-honeypot/.env
+        echo "ES_HOST=$ES_HOST" > ./docker-http-honeypot/.env
+        echo "ES_USER=$ES_USER" >> ./docker-http-honeypot/.env
+        echo "ES_PASSWORD=$ES_PASSWORD" >> ./docker-http-honeypot/.env
+        echo "ES_PORT=$ES_PORT" >> ./docker-http-honeypot/.env
+        echo "ES_SCHEME='http'" >> ./docker-http-honeypot/.env
         # Print a message to indicate that the .env file has been created
         whiptail --msgbox ".env file has been created" 8 40
         ;;
@@ -124,13 +126,15 @@ while true; do
         ;;
     7)
         cd docker-elk
-        sudo docker-compose up -d
+        sudo docker compose up setup
+        sudo docker compose up -d
         ;;
     8)
         cd docker-grafana
-        sudo docker-compose up -d
+        sudo docker compose up -d
+        ;;
     10)
-        sudo docker ps;
+        sudo docker ps
         ;;
 esac
     # Give option to go back to the previous menu or exit
