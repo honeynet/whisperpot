@@ -61,6 +61,9 @@ You need to run it as sudo:
 sudo ./ setup_gui.sh
 ```
 
+<div align="center">
+    <img src="./images/gui.png" alt="GUI Installation" width="600">
+</div>
 
 ## GSoC 2023
 
