@@ -8,6 +8,8 @@ while true; do
                     "4" "Install Python to Capture Traffic" \
                     "5" "Configure Database Connection" \
                     "6" "Run the SIP Capture" \
+                    "7" "Install ELK" \
+                    "8" "Install Grafana" \
                     "10" "Show Status" 3>&1 1>&2 2>&3)
     # Script version 1.0 updated 24 May 2023
     # Depending on the chosen option, execute the corresponding command
