@@ -122,6 +122,13 @@ while true; do
     6)
         sudo docker exec docker-jupyter-jupyter-1 nohup python ./work/sip_capture.py > /dev/null 2>&1 &
         ;;
+    7)
+        cd docker-elk
+        sudo docker-compose up -d
+        ;;
+    8)
+        cd docker-grafana
+        sudo docker-compose up -d
     10)
         sudo docker ps;
         ;;

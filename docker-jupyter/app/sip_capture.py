@@ -49,7 +49,7 @@ def get_ip_details(ip_address):
 
 # Read the credentials from the environment variables
 es_host = os.getenv('ES_HOST')
-es_port = os.getenv('ES_PORT')
+es_port = int(os.getenv('ES_PORT'))
 es_scheme = os.getenv('ES_SCHEME')
 es_user = os.getenv('ES_USER')
 es_password = os.getenv('ES_PASSWORD')
